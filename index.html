@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="https://generativeart.online/css/drawing-app.css">
+
+<script src="https://cdn.jsdelivr.net/gh/netizenorg/netnet-standard-library/build/nn.min.js"></script>
+
+<style>
+  /* global nn */
+  body {
+    background-color: #3b82f6;
+  }
+  
+  .ripple {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    border-radius: 50%;
+    background: transparent;
+    border: 4px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    transform: scale(0);
+    animation: ripple-effect 5s ease-out forwards;
+    pointer-events: none;
+  }
+
+  @keyframes ripple-effect {
+    from {
+      transform: scale(0);
+      opacity: 0.6;
+    }
+    to {
+      transform: scale(4);
+      opacity: 0;
+    }
+  }
+  
+</style>
+
+
+
+<script>
+  /* global nn */
+  function createRipple(x, y, size, delay) {
+    setTimeout(function () {
+      let ripple = nn.create('div');
+
+      ripple.className = 'ripple';
+
+      ripple.style.width = size + 'px';
+      ripple.style.height = size + 'px';
+
+      ripple.style.position = 'absolute';
+      ripple.style.left = (x - size / 2) + 'px';
+      ripple.style.top = (y - size / 2) + 'px';
+
+      document.body.appendChild(ripple);
+
+      ripple.addEventListener('animationend', function () {
+        ripple.remove();
+      });
+    }, delay);
+  }
+
+  nn.on('click', function () {
+    let x = nn.mouseX;
+    let y = nn.mouseY;
+
+    createRipple(x, y, Math.random() * 40 + 110, 0);
+    createRipple(x, y, Math.random() * 30 + 90, 300);
+    createRipple(x, y, Math.random() * 20 + 60, 600);
+  });
+</script>
